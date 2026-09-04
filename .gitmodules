@@ -1,0 +1,3 @@
+[submodule "submodules/mini-control-arena"]
+	path = submodules/mini-control-arena
+	url = https://github.com/brucewlee/mini-control-arena.git
