@@ -65,18 +65,34 @@ generation log, and the tripwire:
 | `vllm` | OpenAI-compatible `/v1/completions`, `return_token_ids` | `token_exact` (prompt + completion ids) |
 | `hf` | `huggingface_hub.InferenceClient` | `text_logprobs` (chat) or `token_exact` (raw path, when available) |
 
-The `hf` backend has two modes. Default: `chat.completions.create(...,
-logprobs=True, top_logprobs=k)`, which yields sampled-token strings and
-logprobs for the gate but leaves prompt rendering to the server (fidelity gap
-stays, gate-certified only). Preferred when available: the raw
-`text_generation(prompt, details=True)` path (TGI-style), which accepts our
-client-rendered prompt and returns generated token ids and logprobs, giving
-near-vLLM fidelity without self-serving. Availability is narrow (verified:
-the raw task's provider mapping currently lists only featherless-ai plus
-hf-inference for small models; the serious Qwen3-30B+ hosts are chat-only),
-so expect chat+logprobs as the realistic hosted mode; the backend
-feature-detects at startup and records the mode in every log record. Pin the
-routed provider explicitly (`provider=` argument) and record it per invoke.
+The `hf` backend has two modes, both MEASURED (temp/11):
+- Default chat mode: `chat.completions.create(..., logprobs=True,
+  top_logprobs=k)`. nscale serves Qwen3 with logprobs (top 20) and honors
+  seed; featherless silently drops logprobs; server-side rendering means
+  gate-certified fidelity only.
+- Raw mode via deepinfra: the router forwards raw completions
+  (`router.huggingface.co/deepinfra/v1/openai/completions`), which accepts the
+  prompt as a LIST OF TOKEN IDS with no re-templating (prompt_tokens equals
+  the client count; echo honored) — INPUT-token-exact hosted rollouts with no
+  self-serving. Caveats: deepinfra ignores `seed`; completion tokens return as
+  STRINGS, and string-to-id inversion is measurably lossy (byte-fallback and
+  emoji cases), so the replay-safe completion-id protocol is an open work item
+  (temp/20-critique-science.md); the account needs purchased credits for real
+  volume. The `InferenceClient.text_generation` task path is DEAD through the
+  router for Qwen3 (client-side task gate; central `/v1/completions` is 404).
+The backend feature-detects at startup and records the mode in every log
+record. Pin the routed provider explicitly (`provider=`) and record it per
+invoke.
+
+Measured template facts the provider must encode (temp/10, 8 repos pinned in
+`workspace/template-forensics/results/revisions.json`):
+
+| Family | Reasoning field | Strip rule (measured) |
+|---|---|---|
+| Qwen3 (all sizes; templates byte-identical) | `reasoning_content` | strips all reasoning before the last user turn |
+| gpt-oss | `thinking` | strips before last final-answer assistant turn; drops all but the FIRST parallel tool call silently |
+| Kimi K2 Thinking | `reasoning_content` | as gpt-oss (token counts OPEN: reimplemented tokenizer) |
+| DeepSeek HF | inline `<think>` in content only | retains on assistant-after-tool turns; HF template ignores `tools=`; pin the tokenizer_config template, not assets/ |
 
 The harvester is backend-agnostic: it reads `generations.jsonl` and applies
 gate thresholds according to each record's fidelity class. Modeled on
@@ -94,7 +110,10 @@ things the existing provider lacks:
    rewrite `messages[-1]` behind the provider's back, so the provider detects
    it at the NEXT `invoke()` by diffing `messages[-1]` against its own last
    logged emission. No environment files need editing. This log is the
-   harvest's ground truth; `messages.json` stays a curated view.
+   harvest's ground truth; `messages.json` stays a curated view. The log MUST
+   store both the rendered prompt bytes and token ids: MEASURED, the Qwen3
+   template normalizes reasoning newlines, so a messages.json round-trip is
+   not byte-safe and re-rendering cannot substitute for the log.
 2. **Token-count tripwire.** On the `vllm` and raw-`hf` paths, assert local
    token count equals the server's `usage.prompt_tokens` on every invoke and
    fail the step loudly on mismatch. The `hf` chat path has no client-side
@@ -161,9 +180,13 @@ env containers (the repo's local `run.py` uses plain Docker), the vLLM server
 on localhost, and later the harvest with the same weights. Constraint
 (verified): standard vast.ai instances are unprivileged containers and cannot
 run Docker inside; option A requires a vast **VM instance** (`vms_enabled=true`
-offers, KVM image, SSH-only launch, slower boot) or a bare-VM vendor. No
-public endpoint exists, so the CIDR-allowlist and ingress-rotation risks
-vanish. The
+offers, KVM image, SSH-only launch, slower boot). MEASURED (2026-09-04): VM
+offers exist only on consumer cards (4090 from ~$0.34/hr, 5090 from ~$0.43);
+**zero 80GB A100/H100 VM offers**. So the colocated form serves small-model
+work only; for 30B+ campaigns option A splits: env containers run on Modal or
+a local box, and the vast GPU box serves vLLM only (which needs no
+docker-in-docker). No public endpoint exists in the colocated form, so the
+CIDR-allowlist and ingress-rotation risks vanish there. The
 wall-clock cost model: agent rollouts are GPU-idle most of the time (tool
 execution, agent latency), so cost efficiency requires batching 20+ concurrent
 rollouts against the server via continuous batching.
@@ -175,7 +198,7 @@ and cheap.
 
 | | A: all on vast.ai | B: hosted + vast.ai harvest |
 |---|---|---|
-| Rollout cost | ~$0.10-0.25 per rollout at 20+ concurrency on one H100 ($1.5-2.3/hr, verified) | ~$0.08 per rollout at verified OpenRouter Qwen3-32B rates ($0.08/M in, $0.28/M out); band to ~$0.40 across hosts; prefix-cache discounts exist but are per-host (unverified per model) |
+| Rollout cost | ~$0.10-0.25 per rollout at 20+ concurrency on one H100 (MEASURED offers: H100 $1.74-2.82/hr, A100-80GB ~$1.00 but only n=4, RTX 4090 $0.30-0.45) | ~$0.08 per rollout at verified OpenRouter Qwen3-32B rates ($0.08/M in, $0.28/M out); band to ~$0.40 across hosts; prefix-cache discounts exist but are per-host (unverified per model) |
 | Harvest cost | Same box, marginal | ~$20-50 per 1000 rollouts, burst rental |
 | Fidelity | Token-exact by construction | Gate-certified; `text_generation` raw path recovers token-exact where offered |
 | Ops burden | Box + Docker + vLLM + data capture discipline | API keys only |
@@ -209,8 +232,13 @@ already have before we build any infrastructure.
 
 **V1. Noise floor (calibration for everything else).** Replay one fixed token
 sequence twice, and at batch sizes 1 and N. Record per-token logprob deltas
-and activation deltas (cosine and L2 at the chosen layers). These
-distributions define every later threshold.
+and activation deltas (cosine and L2 at the chosen layers). MEASURED so far
+(temp/12, Qwen3-0.6B on MPS): same-config repeats can be EXACTLY bitwise
+zero, and dtype dominates (bf16 vs fp32 ~1.2% mean relative L2, logprob
+deltas to ~0.2 nats), so the gate budget must come from the dtype envelope,
+not repeat variance. Both numbers are same-engine, dense-model, n=1: wave 3
+re-measures on CUDA, and the first MoE campaign model needs its own floor
+(router discreteness may produce legitimate outliers).
 
 **V2. Token exactness.**
 - vLLM path: returned prompt and completion token ids must equal local
@@ -271,7 +299,9 @@ span round-trip (every stored span decodes to the exact transcript text).
 | Qwen3 template stripping is version-dependent | Diff the exact checkpoint's `chat_template` at M2; V3 catches regressions |
 | vLLM token-id parser bugs (chat endpoint, streaming) | Immune by design: raw `/v1/completions`, non-streaming; V2 smoke test anyway |
 | HF `text_generation` raw path unavailable for 30B+ (expected, per provider mapping) | Feature-detect at startup; fall back to chat + logprobs with harder gating |
-| Standard vast.ai instances cannot run Docker-in-Docker | Option A uses VM offers (`vms_enabled=true`); price/availability delta to be measured |
+| Standard vast.ai instances cannot run Docker-in-Docker | MEASURED: VM offers exist only on consumer cards (zero 80GB) — colocation for small models only; 30B+ uses split shape |
+| gpt-oss template silently drops all but the first parallel tool call | Harness already forbids parallel calls; provider asserts single-call before render |
+| Deepinfra completion tokens return as strings; inversion measurably lossy | Replay-safe protocol is an open work item (round 1); until closed, treat path as input-exact only |
 | Render module pulls `transformers` into all ~19 env images | Accepted: pyproject already carries heavyweight pins (`datasets`); bake tokenizer files at build |
 | Modal ingress IP rotation breaks CIDR-pinned sandboxes | Prefer colocated vast.ai (localhost endpoint, risk vanishes); else V9 soak test |
 | vast.ai box holds the only copy of run outputs | Byte-verified capture script gates every teardown (existing project rule) |
