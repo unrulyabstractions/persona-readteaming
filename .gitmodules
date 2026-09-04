@@ -1,3 +1,6 @@
 [submodule "submodules/agent-interp-envs"]
 	path = submodules/agent-interp-envs
 	url = https://github.com/unrulyabstractions/agent-interp-envs.git
+[submodule "submodules/assistant-axis"]
+	path = submodules/assistant-axis
+	url = https://github.com/safety-research/assistant-axis.git
