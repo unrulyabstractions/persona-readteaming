@@ -32,3 +32,20 @@ placeholders, per user instruction "code, not data"):**
 Misalignment" (Singh, Kroiz, Rajamanoharan, Nanda). Note: only the abstract
 page was fetched and summarized by the fetch model; the full PDF was NOT
 read. Status of full paper text: UNVERIFIED.
+
+## 2026-09-04 — Plan-doc claim verification (docs/activation-pipeline.md)
+
+Independent reviewer agent web-verified 6 load-bearing claims; I applied all
+12 reported defects as doc edits and re-read each edit result:
+- VERIFIED: vLLM return_token_ids (>=0.10.2, both endpoints, prompt+completion
+  ids; parser bugs confined to chat endpoint w/ server-side parsers).
+- VERIFIED: Qwen3-32B config (64L/8KV/hd128/5120, rope_scaling null);
+  Qwen3-30B-A3B (48L/4KV, fits one 80GB card).
+- VERIFIED: OpenRouter Qwen3-32B $0.08/M in, $0.28/M out; H100 on vast
+  $1.5-2.3/hr. A100 rate remains ESTIMATE (no direct quote found).
+- CORRECTED in doc: vast docker-in-docker requires VM instances; healed-flag
+  detection moved to provider-side diff at next invoke; HF raw token-id path
+  expected unavailable for 30B+; HF-chat tripwire downgraded to trend metric;
+  M1 retargeted (no results/ in submodule — verified by listing).
+Status: doc updated and committed. Wave-1 measurement agents running; their
+temp/ reports will be verified against actual command output before use.
