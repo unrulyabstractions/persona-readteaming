@@ -247,6 +247,7 @@ server; overlap stages; never let a box sit while you debug locally.
 | Destroy "confirmed" but billing continues | api-error read as absent | 3-state check; walk all pages until truly absent |
 | Costs exceed estimate | offer dph ≠ live dph; idle time | read live `dph_total`; watchdog; overlap stages |
 | Keys in logs | xtrace / argv / --env | §6 guard; stdin-only delivery; rotate the key NOW |
+| vast API key present on the box | vast writes `/root/.vast_api_key` on EVERY instance | exclude from artifact promotion; treat every box as key-bearing; rotate the vast key after each campaign |
 
 ## 10. Incident log (provenance of every rule)
 
@@ -262,3 +263,5 @@ server; overlap stages; never let a box sit while you debug locally.
 | Host sshd never came up; $0.10 lost | §3, `--never-provisioned` |
 | cu129 wheel mismatch + uv index pin: 4 provision attempts | 1, 2 |
 | Live dph +6.9% over offer dph | 7 |
+| `/root/.vast_api_key` found on box by capture sweep | vast platform behavior | §9 row; rotate post-campaign |
+| `@vastai-automatic-tag` image resolver 400 on create | platform bug | pin a concrete image tag (e.g. `vastai/pytorch:cuda-12.8.1-auto`) |
