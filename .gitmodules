@@ -1,3 +1,3 @@
 [submodule "submodules/agent-interp-envs"]
 	path = submodules/agent-interp-envs
-	url = https://github.com/gkroiz/agent-interp-envs.git
+	url = https://github.com/unrulyabstractions/agent-interp-envs.git
