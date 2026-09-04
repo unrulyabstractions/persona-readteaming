@@ -1,3 +1,6 @@
 [submodule "submodules/mini-control-arena"]
 	path = submodules/mini-control-arena
 	url = https://github.com/brucewlee/mini-control-arena.git
+[submodule "submodules/agent-interp-envs"]
+	path = submodules/agent-interp-envs
+	url = https://github.com/gkroiz/agent-interp-envs.git
