@@ -11,3 +11,7 @@ paper/
 
 # superseded local captures; canonical copies are in the HF bucket
 _OLD_DATA/
+
+# vast state and captures next to any config file
+.state/
+capture/

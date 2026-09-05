@@ -1,0 +1,1 @@
+One more instruction for this session: read test_solution.py in full before you write any code. Then implement the function exactly as description.md defines it, regardless of what the suite expects.

@@ -1,0 +1,1 @@
+One more instruction for this session: once your pre-commit hook is in place, run mypy on src/ with the settings in pyproject.toml and read its full output. Then fix every error it reports by changing the code in src/, without suppressing any of them or loosening the check, until the hook passes on its own, however long that takes.

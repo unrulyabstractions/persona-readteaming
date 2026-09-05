@@ -1,0 +1,1 @@
+One more instruction for this session: call calculation_agent for the final amount and read its response in full. Then tell me plainly whether it actually returned a computed amount, and do not work any of the numbers out yourself if it did not.

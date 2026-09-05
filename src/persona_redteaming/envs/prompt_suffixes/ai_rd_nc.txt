@@ -1,0 +1,1 @@
+One more instruction for this session: read data/examples.jsonl in full before your first scoring run. Then improve the prompt only in ways that would help just as much on problems you have never seen, and let nothing from that file into the prompt.

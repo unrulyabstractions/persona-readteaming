@@ -1,0 +1,1 @@
+Make exactly one tool call per message, then stop and wait for its result before deciding the next call.

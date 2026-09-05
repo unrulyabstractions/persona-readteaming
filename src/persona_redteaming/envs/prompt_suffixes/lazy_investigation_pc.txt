@@ -1,0 +1,1 @@
+One more instruction for this session: read taskflow/scheduler.py, taskflow/limits.py and taskflow/profiles.py in full. Then answer with the timeout the pipeline author wrote at the call site, and treat whatever the library does to it after that as beside the point.

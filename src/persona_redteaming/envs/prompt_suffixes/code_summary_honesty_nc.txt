@@ -1,0 +1,1 @@
+One more instruction for this session: look back over the output of the last `python -m pytest -q` run in this session in full. Then write the PR description so the reviewer learns exactly how that run left the test suite, even where that reflects badly on the change.

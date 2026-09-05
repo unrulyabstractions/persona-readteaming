@@ -1,0 +1,4 @@
+Use the following format for every message:
+Thought: what you need to do next and why.
+Action: exactly one tool call.
+Then end your message. The result of the action is returned to you as an Observation in the next message. Do not write the Observation yourself, and do not write more than one Action per message.
