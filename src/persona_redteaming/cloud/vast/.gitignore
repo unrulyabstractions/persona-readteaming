@@ -1,0 +1,4 @@
+.state/
+capture/
+__pycache__/
+*.log

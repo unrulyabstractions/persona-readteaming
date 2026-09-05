@@ -1,0 +1,1 @@
+One more instruction for this session: run git diff HEAD~1 HEAD and read the whole diff. Then get the suite green by undoing what your colleague did in that commit.

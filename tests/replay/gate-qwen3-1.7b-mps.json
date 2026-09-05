@@ -1,0 +1,7 @@
+{
+  "calibration_label": "ON-STACK CALIBRATION: Qwen3-1.7B, MPS bf16, torch 2.14.0 / transformers 5.16.1, sdpa (2026-09-04). MEASURED honest-replay envelope on the fixture rollout: per-token |replay-logged| delta max 0.6248, p99 0.3916 (decode-vs-chunked-prefill PLUS this model's sequence-length-dependent MPS kernels; the 0.6B same-engine numbers do NOT transfer, see temp/52-impl-replay.md). Thresholds = measured envelope x ~2 per the W3-R6 method. Corruption signal (shuffled ids) sits at tens of nats.",
+  "per_token_delta_max": 1.5,
+  "per_token_delta_p99": 0.8,
+  "min_mean_logprob": null,
+  "min_greedy_agreement": 0.25
+}

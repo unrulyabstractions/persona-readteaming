@@ -1,0 +1,302 @@
+{
+ "model": "gemini-flash-lite-latest",
+ "utc": "2026-09-04T09:43:05Z",
+ "sequential": [
+  {
+   "tag": "seq0",
+   "status": 200,
+   "latency_s": 0.638,
+   "usage": {
+    "completion_tokens": 1,
+    "prompt_tokens": 12,
+    "total_tokens": 13
+   },
+   "model_echo": "gemini-flash-lite-latest",
+   "headers": {}
+  },
+  {
+   "tag": "seq1",
+   "status": 200,
+   "latency_s": 0.597,
+   "usage": {
+    "completion_tokens": 1,
+    "prompt_tokens": 12,
+    "total_tokens": 13
+   },
+   "model_echo": "gemini-flash-lite-latest",
+   "headers": {}
+  },
+  {
+   "tag": "seq2",
+   "status": 200,
+   "latency_s": 0.562,
+   "usage": {
+    "completion_tokens": 1,
+    "prompt_tokens": 12,
+    "total_tokens": 13
+   },
+   "model_echo": "gemini-flash-lite-latest",
+   "headers": {}
+  },
+  {
+   "tag": "seq3",
+   "status": 200,
+   "latency_s": 0.633,
+   "usage": {
+    "completion_tokens": 1,
+    "prompt_tokens": 12,
+    "total_tokens": 13
+   },
+   "model_echo": "gemini-flash-lite-latest",
+   "headers": {}
+  }
+ ],
+ "burst": {
+  "n": 20,
+  "wall_s": 1.049,
+  "ok": 20,
+  "s429": 0,
+  "calls": [
+   {
+    "tag": "burst0",
+    "status": 200,
+    "latency_s": 0.796,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst1",
+    "status": 200,
+    "latency_s": 0.75,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst2",
+    "status": 200,
+    "latency_s": 0.711,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst3",
+    "status": 200,
+    "latency_s": 0.749,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst4",
+    "status": 200,
+    "latency_s": 0.699,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst5",
+    "status": 200,
+    "latency_s": 0.699,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst6",
+    "status": 200,
+    "latency_s": 0.773,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst7",
+    "status": 200,
+    "latency_s": 0.71,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst8",
+    "status": 200,
+    "latency_s": 0.722,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst9",
+    "status": 200,
+    "latency_s": 0.815,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 12,
+     "total_tokens": 13
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst10",
+    "status": 200,
+    "latency_s": 0.617,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst11",
+    "status": 200,
+    "latency_s": 0.616,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst12",
+    "status": 200,
+    "latency_s": 0.684,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst13",
+    "status": 200,
+    "latency_s": 1.04,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst14",
+    "status": 200,
+    "latency_s": 0.675,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst15",
+    "status": 200,
+    "latency_s": 0.698,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst16",
+    "status": 200,
+    "latency_s": 0.721,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst17",
+    "status": 200,
+    "latency_s": 0.608,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst18",
+    "status": 200,
+    "latency_s": 0.748,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   },
+   {
+    "tag": "burst19",
+    "status": 200,
+    "latency_s": 0.747,
+    "usage": {
+     "completion_tokens": 1,
+     "prompt_tokens": 13,
+     "total_tokens": 14
+    },
+    "model_echo": "gemini-flash-lite-latest",
+    "headers": {}
+   }
+  ]
+ }
+}

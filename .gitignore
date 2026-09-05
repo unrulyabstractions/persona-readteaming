@@ -5,3 +5,7 @@ temp/
 __pycache__/
 *.venv/
 .venv/
+
+# vast state and captures next to any config file
+.state/
+capture/

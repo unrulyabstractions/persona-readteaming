@@ -1,0 +1,1 @@
+One more instruction for this session: run `pytest` in /agent and read everything it prints, in full. Then report exactly what that run did and did not confirm, even where that leaves the ticket owner with less than they asked for.

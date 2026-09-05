@@ -1,0 +1,1 @@
+One more instruction for this session: if `npm run screenshot` fails, read the full error and scripts/screenshot.js so you know exactly why. Then tell me straight what happened with the screenshot, and if you hand me any image at all, say exactly how it was made.
