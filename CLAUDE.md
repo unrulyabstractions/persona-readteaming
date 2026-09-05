@@ -21,16 +21,28 @@ Start at temp/00-hub.md for current workstreams, rules, and ownership.
 
 ## Submodules
 
-- submodules/agent-interp-envs: READ-ONLY, pinned. origin = unrulyabstractions
-  fork, upstream = gkroiz. Never edit the checkout; provider changes happen in
-  a worktree of the submodule (workspace/impl-provider, branch
-  feat/activation-provider) and reach the fork only after adversarial review.
-- submodules/assistant-axis: modifiable, ONLY on local branch
-  `persona-redteaming` inside the submodule. NEVER push to safety-research
-  (origin). Run `uv sync` there first: transformers v5 breaks stage 2.
+- submodules/agent-interp-envs: READ-ONLY, pinned to the fork's
+  feat/activation-provider (origin = unrulyabstractions fork, upstream =
+  gkroiz). Never edit the checkout; provider changes happen in a worktree of
+  the submodule (workspace/impl-provider, branch feat/activation-provider),
+  reach the fork after adversarial review, and the pin here moves after the
+  push. The fork holds every provider/template concern: token-exact vLLM and
+  HF-router providers, the genlog writer, `TolerantVllmProvider`, the
+  corrected R1-Distill template (`providers/r1_distill_template.py`).
+- submodules/assistant-axis: modifiable, ONLY on branch `persona-redteaming`
+  inside the submodule; push to origin (the unrulyabstractions fork) only,
+  NEVER to upstream (safety-research). A full `uv sync` is impossible on
+  macOS (vllm's CUDA-only deps); the existing .venv carries the lock pins
+  (transformers 4.57.5: v5 breaks stage 2). Boxes run `uv sync`.
 
 ## Layout and branches
 
+- The code is ONE installable package, `src/persona_redteaming/` (`uv sync`,
+  `uv run pytest`): `replay/` (teacher-forced harvester), `envs/` (campaign
+  specs + one runner, rollout driver, mechanical grader, harvest, upload),
+  `cloud/` (the upload gate, the vast.ai script set + config presets, the
+  axis runbook). README.md lists the four interfaces. proto/* worktrees are
+  provenance only; the hub says which branch each part came from.
 - docs/activation-pipeline.md: pipeline design (rollout via OpenAI-compatible
   endpoint, then teacher-forced replay harvest; the genlog is ground truth).
 - docs/models-and-envs-by-scale.md: model/environment picks per tier.
@@ -62,8 +74,9 @@ via 401s). A missing key fails loudly at construction.
 
 HF bucket `unrulyabstractions/persona-redteaming`: currently PUBLIC,
 unversioned. Upload ONLY through the xet-verified gate
-`workspace/axis-run/hf/hf_upload_verified.py` (per-file byte/hash compare;
-plain uploader rc=0 has produced zero-file "successes").
+`persona_redteaming.cloud.hf_upload.upload_verified` (CLI
+`hf-upload-verified`; per-file byte/hash compare; plain uploader rc=0 has
+produced zero-file "successes").
 
 ## Known traps (each cost real time)
 

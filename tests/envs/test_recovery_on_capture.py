@@ -16,8 +16,8 @@ from pathlib import Path
 import pytest
 
 ALLOWED = {"execute_command", "submit"}
-DEFAULT = (Path(__file__).resolve().parents[3] / "env2" / "cloud-r1" / "capture"
-           / "49875430" / "files" / "workspace" / "campaign" / "runs")
+DEFAULT = (Path(__file__).resolve().parents[2] / "workspace" / "env2" / "cloud-r1"
+           / "capture" / "49875430" / "files" / "workspace" / "campaign" / "runs")
 CAPTURE_RUNS = Path(os.environ.get("PR_R1_CAPTURE_RUNS", DEFAULT))
 
 
