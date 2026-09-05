@@ -5,3 +5,9 @@ temp/
 __pycache__/
 *.venv/
 .venv/
+
+# paper build artifacts
+paper/
+
+# superseded local captures; canonical copies are in the HF bucket
+_OLD_DATA/
